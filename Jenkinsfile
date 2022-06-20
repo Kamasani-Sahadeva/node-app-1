@@ -6,7 +6,7 @@ pipeline {
 
     }
     stages {
-        stage('Build docker image') {
+        stage('Build docker image'){
             steps {
                 sh 'docker build . -t 8919687630/node-image:${DOCKER_TAG}'    
 
@@ -14,11 +14,22 @@ pipeline {
             
         }
 
+        stage('Push images into Docker Hub'){
+            steps{
+                withCredentials([string(credentialsId: 'Dockerhub_cred', variable: 'DockerHubPwd')]) {
+                sh 'docker login -u 8919687630 -p ${DockerHubPwd}'
+            }
+                
+
+            }
+        }
+
     }
-}
+} 
+
+    
 
 def getDockerTag(){
     def tag = sh script: 'git rev-parse HEAD', returnStdout: true  
     return tag
-    
 }
