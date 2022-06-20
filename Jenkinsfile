@@ -18,6 +18,7 @@ pipeline {
             steps{
                 withCredentials([string(credentialsId: 'Dockerhub_cred', variable: 'DockerHubPwd')]) {
                 sh 'docker login -u 8919687630 -p ${DockerHubPwd}'
+                sh 'docker push 8919687630/node-image:${DOCKER_TAG}'
             }
                 
 
